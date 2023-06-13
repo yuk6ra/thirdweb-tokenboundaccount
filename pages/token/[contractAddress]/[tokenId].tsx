@@ -6,6 +6,9 @@ import styles from "../../../styles/Home.module.css";
 import { useEffect, useState } from "react";
 import { Signer } from "ethers";
 
+import newSmartWallet from "../../../components/SmartWallet/SmartWallets";
+import SmartWalletConnected from "../../../components/SmartWallet/smartWalletConnected";
+
 export const getStaticProps: GetStaticProps = async (context) => {
 
     const tokenId = context.params?.tokenId as string;
@@ -66,10 +69,10 @@ const Token = ({ nft }: Props) => {
 
     useEffect(() => {
 
-        const createSmartWallet = async () => {
+        const createSmartWallet = async (nft: NFT) => {
             if (nft && smartWalletAddress == null && address && wallet) {
                 const smartWallet = newSmartWallet(nft);
-                await smartWallet.conect({
+                await smartWallet.connect({
                     personalWallet: wallet
                 })
 
@@ -102,7 +105,10 @@ const Token = ({ nft }: Props) => {
 
                         <div>
                             {smartWalletAddress ? (
-                                <SmartWalletConnected />
+                                <SmartWalletConnected 
+                                
+                                    signer={signer}
+                                />
                             ): (
                                 <p>Loading ... </p>
                             )}
